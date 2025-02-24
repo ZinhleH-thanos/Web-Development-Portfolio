@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+        background-image: linear-gradient(90deg, #885DF1 0%, #F65282 100%);
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .weather-container {
+        position: relative;
+        width: 90%;
+        max-width: 1000px;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.6); 
+        border-radius: 10px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        z-index: 1;
+        flex-direction: column;
+        overflow-y: auto; 
+    }
+
+    h2 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        color: #F65282;
+    }
+
+    input {
+        width: 80%;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        border: none;
+        background-color: #fff;
+        color: #000;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #F65282;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #885DF1;
+    }
+
+    .weather-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .weather-info {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+
+    .forecast {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .forecast-day {
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 120px;
+        flex: 1 1 120px;
+        min-width: 150px;
+        max-width: 200px;
+        animation: fade-in 1s ease-in-out;
+    }
+
+    .forecast-day img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+
+    .current-weather-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .current-temperature {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #F65282;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        font-style: italic;
+    }
+
+    .current-weather-description,
+    .current-humidity,
+    .current-wind-speed,
+    .current-pressure {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #fff;
+        font-style: italic;
+    }
+
+    .weather-icon img {
+        animation: rotate 2s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .weather-data span {
+        font-weight: bold;
+    }
+
+    .weather-data.temperature {
+        font-size: 36px;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-container">
+    <h2>Weather App</h2>
+    <input type="text" id="city-input" placeholder="Enter city name">
+    <button type="submit">Get Weather</button>
+    <img id="weather-icon" alt="Weather Icon">
+    <div id="weather-info"></div>
+    <div id="error-message"></div>
+    
+    <h3>5-Day Forecast</h3>
+    <div id="forecast"></div>
+    
+    <div id="current-weather-icon"></div>
+    <div id="current-temperature"></div>
+    <div id="current-weather-description"></div>
+    <div id="current-humidity"></div>
+    <div id="current-wind-speed"></div>
+    <div id="current-pressure"></div>
+  </div>
+
+  <script>
+    const apiKey = "9aa5018c4f6496587363322f5cc01dbc";  
+    const weatherIcon = document.getElementById("weather-icon");
+    const weatherInfo = document.getElementById("weather-info");
+    const forecast = document.getElementById("forecast");
+    const cityInput = document.getElementById("city-input");
+    const button = document.querySelector("button");
+    const errorMessage = document.getElementById("error-message");
+
+    button.addEventListener("click", async function() {
+      const city = cityInput.value.trim();
+      if (!city) {
+        errorMessage.textContent = "Please enter a city name.";
+        return;
+      }
+
+      errorMessage.textContent = "";
+
+      try {
+        const weatherData = await fetch(
+          "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&appid=" + apiKey
+        );
+        const data = await weatherData.json();
+
+        if (data.cod !== "200") {
+          errorMessage.textContent = "City not found!";
+          return;
+        }
+
+        const currentWeather = data.list[0];
+        displayCurrentWeather(currentWeather);
+
+        displayForecast(data.list);
+      } catch (error) {
+        errorMessage.textContent = "Something went wrong. Please try again later.";
+      }
+    });
+
+    function displayCurrentWeather(weather) {
+      const iconUrl = "http://openweathermap.org/img/wn/" + weather.weather[0].icon + "@2x.png";
+      weatherIcon.src = iconUrl;
+      weatherInfo.innerHTML = 
+        "<p><strong>" + weather.main.temp + "°C</strong></p>" +
+        "<p>" + weather.weather[0].description + "</p>" +
+        "<p>Humidity: " + weather.main.humidity + "%</p>" +
+        "<p>Wind Speed: " + weather.wind.speed + " m/s</p>";
+    }
+
+    function displayForecast(forecastData) {
+      forecast.innerHTML = ""; 
+      
+      const targetTime = "12:00:00"; 
+      let forecastDays = [];
+
+      forecastData.forEach(function(data) {
+        const date = new Date(data.dt * 1000); 
+        const formattedTime = date.toISOString().split("T")[1].split(".")[0]; 
+
+        if (formattedTime === targetTime) {
+          forecastDays.push(data);
+        }
+      });
+
+      forecastDays.forEach(function(weather) {
+        const date = new Date(weather.dt * 1000);
+        const day = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+
+        const iconUrl = "http://openweathermap.org/img/wn/" + weather.weather[0].icon + "@2x.png";
+
+        const forecastHTML = 
+          "<div class='forecast-day'>" +
+            "<p><strong>" + day + "</strong></p>" +
+            "<img src='" + iconUrl + "' alt='" + weather.weather[0].description + "'>" +
+            "<p><strong>" + weather.main.temp + "°C</strong></p>" +
+            "<p>" + weather.weather[0].description + "</p>" +
+          "</div>";
+
+        forecast.innerHTML += forecastHTML;
+      });
+    }
+  </script>
+</body>
+</html>

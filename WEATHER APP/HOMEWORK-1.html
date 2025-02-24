@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEATHER APP</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+        }
+        h3 {
+            text-align: center;
+        }
+        h3:hover {
+            color: rgb(47, 0, 255);
+            transition: color 0.5s ease;
+            transition: background-color 0.5s ease;
+            transition: transform 0.5s ease;
+        }
+        button {
+            width: 100px;
+            height: 50px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+        button:hover {
+            background-color: #a04585;
+            color: aqua;
+            transition: color 0.5s ease;
+        }
+        footer {
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="weather-info">Currently 23° in Johannesburg</h1>
+    <h2>13° / <strong>23°</strong></h2>
+    <br />
+    <div class="day">
+        <h3>
+            🌧 Tomorrow <div>10° / <strong>25°</strong></div>
+        </h3>
+    </div>
+    <br />
+    <div class="day">
+        <h3>
+            ⛅ Tuesday <div>16° / <strong>21°</strong></div>
+        </h3>
+    </div>
+    <br />
+    <div class="day">
+        <h3>
+            🌈 Wednesday <div>18° / <strong>22°</strong></div>
+        </h3>
+    </div>
+    <button onclick="updateWeather()">Click me!</button>
+    <footer>
+        Coded by Zinhle Hlongwane
+    </footer>
+
+    <script>
+        function updateWeather() {
+            const city = prompt("Which city are you in?");
+            const temperature = prompt("What is the temperature?");
+            
+            if (city && temperature) {
+                let emoji = "";
+                if (temperature > 10) {
+                    emoji = "💃";
+                } else if (temperature <= 9) {
+                    emoji = "🥶"; 
+                }
+
+                const weatherElement = document.getElementById("weather-info");
+                weatherElement.textContent = "Currently " + temperature + "° in " + city + " " + emoji;
+            } else {
+                alert("Please provide both your city and the temperature.");
+            }
+        }
+    </script>
+</body>
+</html>

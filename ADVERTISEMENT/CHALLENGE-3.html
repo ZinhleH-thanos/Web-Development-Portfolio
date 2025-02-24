@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My First Ice-cream</title>
+        <style>
+            body {
+                background-color: #f9faf8ea;
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background-image: linear-gradient(to top, pink 0%, rgba(128, 0, 70, 0.959) 100%);
+            }
+            h1 {
+                background: pink;
+                font-size: 3em;
+                color: #333;
+                border: rgb(255, 192, 234);
+                border-radius: 5px;
+            }
+            p {
+                font-size: 1.5em;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            button {
+                font-size: 1.2em;
+                color: #fff;
+                background-color: rgba(128, 0, 70, 0.959);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
+            button:hover {
+                background-color: pink;
+            }
+        </style>
+    </head>
+    <body>
+        <h1><em>I LOVE ICE-CREAM</em></h1>
+        <h2>My Top Favorite Ice-cream 🍧</h2>
+        <hr />
+        <img src="https://th.bing.com/th/id/OIP.qBf4JGROcml6ysRCuREJegHaLH?rs=1&pid=ImgDetMain" alt="Strawberry cheesecake ice-cream" width="300" height="300">
+        <hr />
+        <p>
+            I've been trying some new flavors lately. One that I absolutely adore is <strong>strawberry cheesecake ice-cream</strong>. It's rich and creamy, perfect for a cold day.<strong>Strawberry cheesecake ice cream</strong> is one of my all-time favorite indulgences. It combines the creamy, rich texture of traditional cheesecake with the sweet, fruity goodness of fresh strawberries. The base of the ice cream is smooth and velvety, with bits of cheesecake mixed throughout, adding a delightful tanginess. Swirls of strawberry sauce ripple through, creating bursts of flavor with each bite. Every spoonful feels like a perfect balance of creamy and fruity, with a hint of graham cracker crust mixed in for an extra touch of authenticity. It's the kind of ice cream that feels like a treat you can savor slowly, letting each bite melt away with pure satisfaction.
+        </p>
+        <a href="https://icecreamfromscratch.com/strawberry-cheesecake-ice-cream/" target="_blank">Read more about me</a>
+        <hr />
+        <button onclick="showPopup()">TRY ME!❤️</button>
+
+        <script>
+            function showPopup() {
+                let name = prompt("What is your name?");
+                
+                if (name) {
+                    alert("Hello, " + name + "! I hope you enjoy your ice-cream. If you have any questions, feel free to ask.");
+                } else {
+                    alert("No name entered. Enjoy your ice-cream!");
+                }
+            }
+        </script>
+    </body>
+</html>
